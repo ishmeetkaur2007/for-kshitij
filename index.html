@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sunny Gratitude 🌻 - A Bright Sunflower Thank You</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sun: {
+              50: '#FFFDE7',
+              100: '#FFF9C4',
+              200: '#FFF59D',
+              300: '#FFF176',
+              400: '#FFEE58',
+              500: '#FFEB3B',
+              600: '#FDD835',
+              700: '#FBC02D',
+              800: '#F9A825',
+              900: '#F57F17',
+              gold: '#FFB300',
+              amber: '#FF8F00',
+              deep: '#E65100'
+            },
+            meadow: {
+              100: '#E8F5E9',
+              300: '#A5D6A7',
+              500: '#4CAF50',
+              700: '#2E7D32'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <!-- HTML2Canvas for downloading cards -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="selection:bg-amber-200 selection:text-amber-900">
+
+  <!-- Background Sunbeam Aura & Floating Petals Canvas -->
+  <div class="sunbeam-backdrop"></div>
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- Reusable SVG Gradients & Filters -->
+  <svg class="hidden">
+    <defs>
+      <linearGradient id="sunPetalGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#FFF176" />
+        <stop offset="40%" stop-color="#FFCA28" />
+        <stop offset="85%" stop-color="#FF9800" />
+        <stop offset="100%" stop-color="#F57C00" />
+      </linearGradient>
+      <linearGradient id="sunPetalSecondary" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#FFEE58" />
+        <stop offset="60%" stop-color="#FFB300" />
+        <stop offset="100%" stop-color="#E65100" />
+      </linearGradient>
+      <radialGradient id="sunSeedPattern" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#3E2723" />
+        <stop offset="55%" stop-color="#4E342E" />
+        <stop offset="85%" stop-color="#5D4037" />
+        <stop offset="100%" stop-color="#8D6E63" />
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-amber-50/80 border-b border-amber-200/60 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-300 flex items-center justify-center shadow-lg shadow-amber-300/50 group-hover:rotate-12 transition-transform duration-300">
+          <span class="text-2xl animate-spin-slow">🌻</span>
+        </div>
+        <div>
+          <span class="font-serif-display font-bold text-2xl tracking-tight text-amber-950 block leading-tight">SunnyGratitude</span>
+          <span class="text-xs font-semibold text-amber-700 tracking-wider uppercase">Sunflower Thank You</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links & Actions -->
+      <div class="flex items-center gap-3 sm:gap-6">
+        <nav class="hidden md:flex items-center gap-6 font-medium text-amber-900 text-sm">
+          <a href="#special-section" class="hover:text-amber-600 transition-colors">Special Note</a>
+          <a href="#garden-section" class="hover:text-amber-600 transition-colors">Sun Meadow</a>
+          <a href="#bouquet-section" class="hover:text-amber-600 transition-colors">Bouquet Builder</a>
+          <a href="#card-generator" class="hover:text-amber-600 transition-colors">Card Maker</a>
+        </nav>
+
+        <!-- Sound Toggle Button -->
+        <button id="sound-toggle-btn" class="p-2.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-800 transition-all border border-amber-300 shadow-sm" title="Toggle Sunny Chimes Audio">
+          <i data-lucide="volume-2" id="sound-icon-on" class="w-5 h-5"></i>
+          <i data-lucide="volume-x" id="sound-icon-off" class="w-5 h-5 hidden"></i>
+        </button>
+
+        <!-- IMPORTANT MESSAGE BUTTON (Top Header Highlight) -->
+        <button id="nav-important-msg-btn" class="important-btn-glow flex items-center gap-2 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-amber-950 font-bold px-4 py-2.5 rounded-full shadow-lg hover:shadow-amber-400/60 hover:brightness-105 transition-all text-sm transform hover:-translate-y-0.5">
+          <span class="text-lg">🌟</span>
+          <span>Important Message</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <main class="relative z-10">
+    <section class="relative pt-10 pb-20 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Hero Text Content -->
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            
+            <!-- Sunshine Tag -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100/90 border border-amber-300/80 shadow-sm text-amber-800 text-sm font-semibold animate-float-sway">
+              <span class="text-amber-500">✨</span>
+              <span>Like Sunflowers Turning To The Light</span>
+              <span class="text-base">🌻</span>
+            </div>
+
+            <!-- Big Cheerful Title -->
+            <h1 class="font-serif-display text-4xl sm:text-6xl lg:text-7xl font-extrabold text-amber-950 tracking-tight leading-[1.15]">
+              A Million <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600">Thank Yous</span> Under The Warm Sun
+            </h1>
+
+            <p class="text-lg sm:text-xl text-amber-900/80 max-w-2xl font-normal leading-relaxed">
+              Gratitude is the sunshine that makes every soul bloom. Celebrating the bright minds, guiding lights, and beautiful hearts that make our journey wonderful.
+            </p>
+
+            <!-- ACTION BUTTONS: Featuring the glowing Important Message Button -->
+            <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              
+              <!-- MAIN PROMINENT IMPORTANT MESSAGE BUTTON -->
+              <button id="hero-important-btn" class="important-btn-glow group relative inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-600 hover:to-yellow-400 text-amber-950 font-extrabold text-lg px-8 py-4 rounded-2xl shadow-xl shadow-amber-400/40 transform hover:-translate-y-1 hover:scale-105 transition-all duration-300">
+                <span class="text-2xl group-hover:rotate-12 transition-transform">💌</span>
+                <span>Open Important Message</span>
+                <span class="bg-amber-950/10 px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-950">Special</span>
+              </button>
+
+              <a href="#garden-section" class="inline-flex items-center gap-2 bg-white/90 hover:bg-white text-amber-900 font-semibold px-6 py-4 rounded-2xl border-2 border-amber-300 shadow-md hover:shadow-lg hover:border-amber-400 transition-all">
+                <span>🌱</span>
+                <span>Plant a Flower</span>
+              </a>
+
+              <a href="#bouquet-section" class="inline-flex items-center gap-2 bg-amber-100/90 hover:bg-amber-200 text-amber-900 font-semibold px-6 py-4 rounded-2xl border border-amber-300/70 shadow-sm hover:shadow-md transition-all">
+                <span>💐</span>
+                <span>Bouquet Builder</span>
+              </a>
+
+            </div>
+
+            <!-- Warm Stats / Highlights -->
+            <div class="pt-6 grid grid-cols-3 gap-4 border-t border-amber-200/80 max-w-lg mx-auto lg:mx-0 text-center">
+              <div class="p-3 bg-amber-50/60 rounded-xl border border-amber-200/40">
+                <div class="text-2xl font-bold text-amber-800">100%</div>
+                <div class="text-xs text-amber-700 font-medium">Heartfelt Gratitude</div>
+              </div>
+              <div class="p-3 bg-amber-50/60 rounded-xl border border-amber-200/40">
+                <div class="text-2xl font-bold text-amber-800">∞</div >
+                <div class="text-xs text-amber-700 font-medium">Sunbeams & Smiles</div>
+              </div>
+              <div class="p-3 bg-amber-50/60 rounded-xl border border-amber-200/40">
+                <div class="text-2xl font-bold text-amber-800">🌻</div>
+                <div class="text-xs text-amber-700 font-medium">Forever Blooming</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Hero Phototropic Interactive Sunflower Animation -->
+          <div class="lg:col-span-5 flex justify-center items-center relative">
+            <div class="relative w-full max-w-md aspect-square flex items-center justify-center">
+              
+              <!-- Sun Rays Glow Background -->
+              <div class="absolute inset-0 bg-gradient-to-tr from-yellow-300/40 via-amber-300/30 to-transparent rounded-full filter blur-2xl animate-sun-pulse pointer-events-none"></div>
+
+              <!-- Interactive Sunflower SVG (Cursor Tracking) -->
+              <div id="interactive-sunflower-container" class="relative z-10 w-full h-full flex items-center justify-center cursor-pointer select-none" title="Move your mouse! The sunflower follows you. Click to bloom!">
+                <svg id="hero-sunflower-svg" viewBox="0 0 400 450" class="w-full h-full filter drop-shadow-xl transition-transform duration-100 ease-out">
+                  
+                  <!-- Pot / Soil Base -->
+                  <ellipse cx="200" cy="410" rx="80" ry="18" fill="#5D4037" opacity="0.9" />
+                  <path d="M140 410 L150 435 Q200 445 250 435 L260 410 Z" fill="#8D6E63" />
+
+                  <!-- Green Stem -->
+                  <path id="flower-stem" class="stem-path" d="M200 410 Q200 300 200 180" />
+
+                  <!-- Leaf Left -->
+                  <g class="leaf-left" transform="translate(185, 290)">
+                    <path class="leaf-path" d="M0,0 C-40,-10 -60,-35 -80,-20 C-75,10 -40,25 0,0 Z" />
+                    <line x1="0" y1="0" x2="-65" y2="-15" stroke="#2E7D32" stroke-width="1.5" />
+                  </g>
+
+                  <!-- Leaf Right -->
+                  <g class="leaf-right" transform="translate(210, 240)">
+                    <path class="leaf-path" d="M0,0 C40,-10 65,-35 85,-15 C80,15 45,25 0,0 Z" />
+                    <line x1="0" y1="0" x2="70" y2="-12" stroke="#2E7D32" stroke-width="1.5" />
+                  </g>
+
+                  <!-- Sunflower Head (Rotates & Tilts) -->
+                  <g id="flower-head" transform="translate(200, 180)">
+                    
+                    <!-- Outer Petals Layer -->
+                    <g id="outer-petals" class="animate-spin-slow">
+                      <!-- 16 Outer Petals Generated via SVG -->
+                      <!-- Petal 0 -->
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(0)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(22.5)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(45)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(67.5)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(90)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(112.5)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(135)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(157.5)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(180)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(202.5)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(225)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(247.5)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(270)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(292.5)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(315)" />
+                      <path class="sunflower-petal" d="M0,0 C-14,-30 -14,-75 0,-105 C14,-75 14,-30 0,0 Z" transform="rotate(337.5)" />
+                    </g>
+
+                    <!-- Inner Petals Layer (Offset for Rich Density) -->
+                    <g id="inner-petals">
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(11.25)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(33.75)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(56.25)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(78.75)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(101.25)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(123.75)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(146.25)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(168.75)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(191.25)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(213.75)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(236.25)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(258.75)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(281.25)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(303.75)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(326.25)" />
+                      <path fill="url(#sunPetalSecondary)" opacity="0.95" d="M0,0 C-11,-25 -11,-60 0,-85 C11,-60 11,-25 0,0 Z" transform="rotate(348.75)" />
+                    </g>
+
+                    <!-- Center Seed Disc with Fibonacci texture -->
+                    <circle cx="0" cy="0" r="42" class="sunflower-center" />
+                    <!-- Fluff texture ring -->
+                    <circle cx="0" cy="0" r="34" fill="none" stroke="#2D1A14" stroke-width="3" stroke-dasharray="3,3" opacity="0.7" />
+                    <circle cx="0" cy="0" r="22" fill="none" stroke="#6D4C41" stroke-width="2.5" stroke-dasharray="2,3" opacity="0.6" />
+                    <!-- Smiley / Heart center -->
+                    <text x="0" y="8" font-size="20" text-anchor="middle" fill="#FFCA28" opacity="0.85">✨</text>
+                  </g>
+
+                </svg>
+
+                <!-- Floating Interactive Badge -->
+                <div class="absolute -bottom-2 bg-amber-500/90 text-amber-950 font-bold text-xs px-3 py-1.5 rounded-full shadow-md border border-amber-300 animate-bounce flex items-center gap-1">
+                  <span>🌻 Click Me to Bloom!</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SPECIAL DEDICATION SECTION ================= -->
+    <section id="special-section" class="py-16 bg-gradient-to-b from-amber-100/40 via-yellow-100/50 to-amber-50/30 relative">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center space-y-3 mb-10">
+          <span class="text-amber-600 font-bold tracking-widest text-xs uppercase bg-amber-200/70 px-3 py-1 rounded-full border border-amber-300">Dedicated Note of Appreciation</span>
+          <h2 class="font-serif-display text-3xl sm:text-5xl font-extrabold text-amber-950">A Guiding Light That Inspires</h2>
+          <p class="text-amber-900/80 max-w-xl mx-auto text-base">Click below to reveal this heartfelt message enveloped in sunny warmth.</p>
+        </div>
+
+        <!-- The Special Interactive Letter Container -->
+        <div class="special-letter-card rounded-3xl p-8 sm:p-12 text-center shadow-2xl relative">
+          
+          <!-- Decorative Floating Corner Sunflowers -->
+          <div class="absolute top-4 left-4 text-3xl animate-bounce" style="animation-duration: 4s;">🌻</div>
+          <div class="absolute top-4 right-4 text-3xl animate-bounce" style="animation-duration: 3.5s;">✨</div>
+          <div class="absolute bottom-4 left-4 text-3xl animate-bounce" style="animation-duration: 4.5s;">☀️</div>
+          <div class="absolute bottom-4 right-4 text-3xl animate-bounce" style="animation-duration: 3.8s;">🌻</div>
+
+          <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+            
+            <!-- Brother's Cool Photo Polaroid Card -->
+            <div class="relative inline-block mx-auto group">
+              <div class="p-3.5 pb-4 bg-white/95 rounded-2xl shadow-2xl border-2 border-amber-300 transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-300 max-w-[260px] sm:max-w-[300px]">
+                <div class="relative overflow-hidden rounded-xl border border-amber-200 shadow-inner">
+                  <img 
+                    src="assets/kshitij.jpg" 
+                    alt="Kshitij - my cutu and cool brother" 
+                    class="w-full h-auto object-cover object-center max-h-72 transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div class="absolute top-2 right-2 bg-amber-500/90 backdrop-blur-sm text-amber-950 font-extrabold px-2.5 py-1 rounded-full text-xs shadow-md flex items-center gap-1 border border-amber-300">
+                    <span>😎</span>
+                    <span>Cool Bro</span>
+                  </div>
+                </div>
+                <div class="mt-3 text-center space-y-0.5">
+                  <p class="font-handwriting text-2xl sm:text-3xl text-amber-950 font-bold tracking-wide">
+                    “my cutu and cool brother”
+                  </p>
+                  <div class="flex items-center justify-center gap-1.5 text-xs text-amber-700 font-bold uppercase tracking-wider">
+                    <span>🌻</span>
+                    <span>Always Guiding & Awesome</span>
+                    <span>✨</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Sunflower & Sparkle Pins -->
+              <div class="absolute -top-3 -left-3 text-3xl animate-spin-slow">🌻</div>
+              <div class="absolute -bottom-2 -right-3 text-3xl animate-bounce" style="animation-duration: 2.5s;">🕶️</div>
+            </div>
+
+            <div class="space-y-1">
+              <span class="text-amber-800 font-bold uppercase tracking-widest text-xs">Heartfelt Message For</span>
+              <h3 class="font-serif-display text-3xl sm:text-4xl font-bold text-amber-950">Kshitij</h3>
+            </div>
+
+            <!-- The Highlighted Message Box -->
+            <div class="bg-white/85 backdrop-blur-md rounded-2xl p-6 sm:p-8 border-2 border-amber-300/80 shadow-inner relative">
+              <p class="font-handwriting text-2xl sm:text-3xl lg:text-4xl text-amber-950 font-bold leading-relaxed">
+                “thankyou for always guiding me and please be the same like this only kshitij , i m very grateful to have you in my life 😇🙏✨”
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+              
+              <button id="card-action-celebrate" class="important-btn-glow bg-amber-500 hover:bg-amber-600 text-amber-950 font-bold px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-2">
+                <span>🌻 Shower Sunflowers</span>
+              </button>
+
+              <button id="card-action-copy" class="bg-white/90 hover:bg-white text-amber-900 font-semibold px-6 py-3 rounded-xl border border-amber-300 shadow-sm transition-all flex items-center gap-2">
+                <i data-lucide="copy" class="w-4 h-4"></i>
+                <span id="copy-btn-text">Copy Message</span>
+              </button>
+
+              <button id="card-action-plant" class="bg-amber-100/90 hover:bg-amber-200 text-amber-900 font-semibold px-6 py-3 rounded-xl border border-amber-300 shadow-sm transition-all flex items-center gap-2">
+                <span>🌱 Plant in Garden</span>
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= INTERACTIVE SUNFLOWER GARDEN ================= -->
+    <section id="garden-section" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center space-y-3 mb-10">
+        <span class="text-emerald-700 font-bold tracking-widest text-xs uppercase bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">Interactive Meadow</span>
+        <h2 class="font-serif-display text-3xl sm:text-5xl font-extrabold text-amber-950">Plant a Sunflower of Gratitude 🌻</h2>
+        <p class="text-amber-900/80 max-w-xl mx-auto text-base">Click anywhere on the meadow or type your thank-you note below to grow a blooming sunflower.</p>
+      </div>
+
+      <!-- Plant Input Controls -->
+      <div class="max-w-2xl mx-auto mb-8 bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-amber-300 shadow-lg flex flex-col sm:flex-row gap-3 items-center">
+        <input 
+          type="text" 
+          id="garden-input-text" 
+          placeholder="Write who you're grateful for or a warm thank-you thought..." 
+          class="w-full px-4 py-3 rounded-xl border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-400 text-amber-950 placeholder-amber-400 bg-amber-50/40 text-sm"
+          value="Grateful for Kshitij's guidance & support! 😇🙏"
+        />
+        <button id="garden-plant-btn" class="w-full sm:w-auto shrink-0 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold px-6 py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+          <span>🌱</span>
+          <span>Plant Flower</span>
+        </button>
+      </div>
+
+      <!-- Meadow Field Canvas / Container -->
+      <div id="garden-field" class="garden-field relative cursor-crosshair">
+        <!-- Sun in the Meadow Sky -->
+        <div class="absolute top-6 right-8 w-20 h-20 rounded-full bg-gradient-to-br from-yellow-300 to-amber-400 shadow-2xl shadow-yellow-400/80 flex items-center justify-center animate-sun-pulse pointer-events-none">
+          <span class="text-3xl">☀️</span>
+        </div>
+
+        <!-- Sky Clouds -->
+        <div class="absolute top-8 left-12 bg-white/60 backdrop-blur-sm rounded-full px-6 py-2 shadow-sm text-xs font-semibold text-emerald-800 pointer-events-none animate-float-sway">
+          ☁️ Click anywhere on the grass to sprout a sunflower!
+        </div>
+
+        <!-- Grass Base Line -->
+        <div class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-emerald-800 to-transparent pointer-events-none"></div>
+
+        <!-- Container for dynamically planted sunflowers -->
+        <div id="planted-flowers-container" class="absolute inset-0"></div>
+      </div>
+      
+      <div class="text-center mt-3 text-xs text-amber-800/70 font-medium">
+        💡 Hover over any sunflower in the garden to read its gratitude note.
+      </div>
+    </section>
+
+    <!-- ================= VIRTUAL BOUQUET BUILDER ================= -->
+    <section id="bouquet-section" class="py-16 bg-gradient-to-b from-amber-50/60 to-yellow-100/40 border-y border-amber-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center space-y-3 mb-12">
+          <span class="text-amber-700 font-bold tracking-widest text-xs uppercase bg-amber-200/60 px-3 py-1 rounded-full border border-amber-300">Gift of Sunshine</span>
+          <h2 class="font-serif-display text-3xl sm:text-5xl font-extrabold text-amber-950">Assemble a Sunflower Bouquet 💐</h2>
+          <p class="text-amber-900/80 max-w-xl mx-auto text-base">Customize your bouquet arrangement with ribbon colors, wrapping, and personal gift tags.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- Bouquet Controls -->
+          <div class="lg:col-span-6 space-y-6 bg-white/90 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-amber-300/80 shadow-xl">
+            
+            <!-- Number of Sunflowers -->
+            <div>
+              <label class="block text-sm font-bold text-amber-950 mb-2">Number of Blooms:</label>
+              <div class="grid grid-cols-4 gap-3">
+                <button class="bouquet-count-btn active py-2.5 rounded-xl border-2 border-amber-400 bg-amber-100 font-bold text-amber-950 text-sm" data-count="3">3 Blooms</button>
+                <button class="bouquet-count-btn py-2.5 rounded-xl border-2 border-amber-200 hover:border-amber-400 font-bold text-amber-900 text-sm" data-count="5">5 Blooms</button>
+                <button class="bouquet-count-btn py-2.5 rounded-xl border-2 border-amber-200 hover:border-amber-400 font-bold text-amber-900 text-sm" data-count="7">7 Blooms</button>
+                <button class="bouquet-count-btn py-2.5 rounded-xl border-2 border-amber-200 hover:border-amber-400 font-bold text-amber-900 text-sm" data-count="9">9 Giant</button>
+              </div>
+            </div>
+
+            <!-- Ribbon Color -->
+            <div>
+              <label class="block text-sm font-bold text-amber-950 mb-2">Ribbon Color:</label>
+              <div class="flex gap-3">
+                <button class="bouquet-ribbon-btn active w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 border-2 border-white ring-2 ring-amber-400" data-ribbon="gold" title="Golden Sunshine"></button>
+                <button class="bouquet-ribbon-btn w-10 h-10 rounded-full bg-gradient-to-r from-emerald-400 to-green-600 border-2 border-white ring-1 ring-emerald-300" data-ribbon="emerald" title="Emerald Meadow"></button>
+                <button class="bouquet-ribbon-btn w-10 h-10 rounded-full bg-gradient-to-r from-pink-400 to-rose-500 border-2 border-white ring-1 ring-pink-300" data-ribbon="pink" title="Warm Rose"></button>
+                <button class="bouquet-ribbon-btn w-10 h-10 rounded-full bg-gradient-to-r from-sky-400 to-blue-600 border-2 border-white ring-1 ring-sky-300" data-ribbon="blue" title="Azure Sky"></button>
+              </div>
+            </div>
+
+            <!-- Gift Tag Recipient & Note -->
+            <div>
+              <label class="block text-sm font-bold text-amber-950 mb-2">Gift Tag Note:</label>
+              <input 
+                type="text" 
+                id="bouquet-tag-input" 
+                value="For Kshitij - Thank you for always guiding me! 😇🙏" 
+                class="w-full px-4 py-3 rounded-xl border border-amber-300 focus:ring-2 focus:ring-amber-400 focus:outline-none text-amber-950 font-medium text-sm"
+              />
+            </div>
+
+            <!-- Wrapper Style -->
+            <div>
+              <label class="block text-sm font-bold text-amber-950 mb-2">Wrapping Style:</label>
+              <div class="grid grid-cols-3 gap-3">
+                <button class="bouquet-wrap-btn active py-2 rounded-lg border-2 border-amber-400 bg-amber-100 text-xs font-bold text-amber-950" data-wrap="kraft">Kraft Paper 📜</button>
+                <button class="bouquet-wrap-btn py-2 rounded-lg border-2 border-amber-200 text-xs font-bold text-amber-900" data-wrap="white">Silk White 🕊️</button>
+                <button class="bouquet-wrap-btn py-2 rounded-lg border-2 border-amber-200 text-xs font-bold text-amber-900" data-wrap="golden">Golden Foil ✨</button>
+              </div>
+            </div>
+
+            <button id="bouquet-celebrate-btn" class="w-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-600 hover:to-yellow-500 text-amber-950 font-extrabold py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-base">
+              <span>🎁</span>
+              <span>Celebrate & Present Bouquet</span>
+            </button>
+
+          </div>
+
+          <!-- Bouquet Visual Display Preview -->
+          <div class="lg:col-span-6 flex justify-center">
+            <div id="bouquet-preview-card" class="relative w-full max-w-sm aspect-[4/5] bg-gradient-to-b from-amber-50 to-amber-100/90 rounded-3xl p-6 border-2 border-amber-300 shadow-2xl flex flex-col items-center justify-between overflow-hidden">
+              
+              <!-- Sun Halo -->
+              <div class="absolute top-10 w-48 h-48 rounded-full bg-amber-300/30 filter blur-xl animate-sun-pulse pointer-events-none"></div>
+
+              <!-- Animated Bouquet Flowers Illustration -->
+              <div id="bouquet-visual-flowers" class="relative z-10 w-full flex-1 flex items-center justify-center">
+                <!-- Dynamically rendered flowers -->
+              </div>
+
+              <!-- Ribbon & Tag -->
+              <div class="relative z-20 w-full text-center mt-auto pt-4 border-t border-amber-200">
+                <div id="bouquet-rendered-tag" class="bg-white/95 rounded-xl p-3 shadow-md border border-amber-300 inline-block max-w-[90%]">
+                  <div class="text-xs font-bold uppercase text-amber-700">Special Sunshine Gift 🌻</div>
+                  <div id="bouquet-tag-text-display" class="font-handwriting text-xl font-bold text-amber-950 mt-1">
+                    For Kshitij - Thank you for always guiding me! 😇🙏
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= CUSTOM THANK YOU CARD GENERATOR ================= -->
+    <section id="card-generator" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center space-y-3 mb-12">
+        <span class="text-amber-700 font-bold tracking-widest text-xs uppercase bg-amber-200/60 px-3 py-1 rounded-full border border-amber-300">Personalized Keepsake</span>
+        <h2 class="font-serif-display text-3xl sm:text-5xl font-extrabold text-amber-950">Sunflower Thank-You Card Maker 💌</h2>
+        <p class="text-amber-900/80 max-w-xl mx-auto text-base">Create and customize a bright thank-you card that you can download or share directly.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Form Inputs -->
+        <div class="lg:col-span-5 space-y-5 bg-white/90 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-amber-300 shadow-xl">
+          
+          <div>
+            <label class="block text-sm font-bold text-amber-950 mb-1">To (Recipient):</label>
+            <input 
+              type="text" 
+              id="card-input-to" 
+              value="Kshitij" 
+              class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:ring-2 focus:ring-amber-400 focus:outline-none text-amber-950 font-semibold"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-amber-950 mb-1">Your Message:</label>
+            <textarea 
+              id="card-input-msg" 
+              rows="4" 
+              class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:ring-2 focus:ring-amber-400 focus:outline-none text-amber-950 text-sm font-medium"
+            >thankyou for always guiding me and please be the same like this only kshitij , i m very grateful to have you in my life 😇🙏✨</textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-amber-950 mb-1">From (Your Name):</label>
+            <input 
+              type="text" 
+              id="card-input-from" 
+              value="With Warmth & Gratitude 🌻" 
+              class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:ring-2 focus:ring-amber-400 focus:outline-none text-amber-950 font-semibold text-sm"
+            />
+          </div>
+
+          <!-- Color Palette / Card Style -->
+          <div>
+            <label class="block text-sm font-bold text-amber-950 mb-1">Card Theme Glow:</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button class="card-theme-btn active py-2 rounded-lg border-2 border-amber-400 bg-amber-100 text-xs font-bold text-amber-950" data-theme="sunshine">Morning Sun ☀️</button>
+              <button class="card-theme-btn py-2 rounded-lg border-2 border-amber-200 text-xs font-bold text-amber-900" data-theme="meadow">Meadow Green 🌿</button>
+              <button class="card-theme-btn py-2 rounded-lg border-2 border-amber-200 text-xs font-bold text-amber-900" data-theme="golden">Amber Honey 🍯</button>
+            </div>
+          </div>
+
+          <button id="download-card-btn" class="w-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-600 hover:to-yellow-500 text-amber-950 font-extrabold py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+            <i data-lucide="download" class="w-5 h-5"></i>
+            <span>Download Card as Image</span>
+          </button>
+
+        </div>
+
+        <!-- Live Card Preview -->
+        <div class="lg:col-span-7 flex justify-center">
+          <div id="exportable-thank-you-card" class="relative w-full max-w-lg bg-gradient-to-tr from-amber-100 via-yellow-50 to-amber-100 p-8 sm:p-10 rounded-3xl border-4 border-amber-300 shadow-2xl text-center space-y-6 overflow-hidden">
+            
+            <!-- Corner Sunflowers -->
+            <div class="absolute -top-4 -left-4 text-4xl animate-spin-slow">🌻</div>
+            <div class="absolute -top-4 -right-4 text-4xl animate-spin-slow">🌻</div>
+            <div class="absolute -bottom-4 -left-4 text-4xl animate-spin-slow">🌻</div>
+            <div class="absolute -bottom-4 -right-4 text-4xl animate-spin-slow">🌻</div>
+
+            <div class="space-y-1">
+              <span class="text-xs font-extrabold uppercase tracking-widest text-amber-700">Warmest Thanks To</span>
+              <h4 id="preview-card-to" class="font-serif-display text-3xl font-extrabold text-amber-950">Dear Kshitij</h4>
+            </div>
+
+            <!-- Central Thank You Emblem -->
+            <div class="inline-flex items-center gap-2 bg-amber-400/30 px-4 py-1.5 rounded-full border border-amber-300">
+              <span class="text-lg">✨</span>
+              <span class="font-bold text-amber-900 text-sm">A Bright Thank You</span>
+              <span class="text-lg">🌻</span>
+            </div>
+
+            <!-- Message Body -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-amber-200 shadow-sm">
+              <p id="preview-card-body" class="font-handwriting text-2xl sm:text-3xl text-amber-950 font-bold leading-relaxed">
+                thankyou for always guiding me and please be the same like this only kshitij , i m very grateful to have you in my life 😇🙏✨
+              </p>
+            </div>
+
+            <div class="text-right">
+              <p id="preview-card-from" class="font-handwriting text-2xl text-amber-900 font-bold">
+                With Warmth & Gratitude 🌻
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= GRATITUDE WALL OF SUNSHINE ================= -->
+    <section class="py-16 bg-amber-50/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center space-y-3 mb-12">
+          <span class="text-amber-700 font-bold tracking-widest text-xs uppercase bg-amber-200/60 px-3 py-1 rounded-full border border-amber-300">Inspiring Sunbeams</span>
+          <h2 class="font-serif-display text-3xl sm:text-5xl font-extrabold text-amber-950">The Sunshine Gratitude Wall</h2>
+          <p class="text-amber-900/80 max-w-xl mx-auto text-base">Little reminders of why saying thank you brings light into the world.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Card 1 -->
+          <div class="sun-card p-6 rounded-3xl space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl">
+              🌟
+            </div>
+            <h3 class="font-serif-display text-xl font-bold text-amber-950">Guiding Stars</h3>
+            <p class="text-amber-900/80 text-sm leading-relaxed">
+              "A true mentor and guide is like the morning sun, helping you find your way without ever casting a shadow."
+            </p>
+            <div class="text-xs font-bold text-amber-600 uppercase tracking-wider">🌻 Forever Grateful</div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="sun-card p-6 rounded-3xl space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl">
+              🌻
+            </div>
+            <h3 class="font-serif-display text-xl font-bold text-amber-950">The Sunflower Mindset</h3>
+            <p class="text-amber-900/80 text-sm leading-relaxed">
+              "Turn your face to the sun and the shadows will fall behind you. Thank you for always bringing clarity and positivity."
+            </p>
+            <div class="text-xs font-bold text-amber-600 uppercase tracking-wider">☀️ Golden Warmth</div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="sun-card p-6 rounded-3xl space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl">
+              💛
+            </div>
+            <h3 class="font-serif-display text-xl font-bold text-amber-950">Heart of Gold</h3>
+            <p class="text-amber-900/80 text-sm leading-relaxed">
+              "Having someone who guides you with genuine patience and kindness is one of life's greatest blessings."
+            </p>
+            <div class="text-xs font-bold text-amber-600 uppercase tracking-wider">😇 Blessed & Thankful</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= IMPORTANT MESSAGE POPUP MODAL ================= -->
+  <div id="important-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden transition-opacity duration-300 opacity-0">
+    <div class="relative w-full max-w-2xl special-letter-card rounded-3xl p-8 sm:p-12 text-center shadow-2xl transform scale-95 transition-transform duration-300">
+      
+      <!-- Close Button -->
+      <button id="modal-close-btn" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-amber-950 font-bold flex items-center justify-center shadow-md border border-amber-300 transition-all z-20">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Decorative Animated Badges -->
+      <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-amber-950 font-black px-6 py-2 rounded-full shadow-lg border-2 border-white flex items-center gap-2 text-sm uppercase tracking-widest">
+        <span>🌻</span>
+        <span>A Special Thank You</span>
+        <span>🌻</span>
+      </div>
+
+      <div class="relative z-10 space-y-6 pt-2">
+        
+        <!-- Brother's Photo in Modal -->
+        <div class="relative inline-block mx-auto">
+          <div class="p-3 pb-3.5 bg-white/95 rounded-2xl shadow-xl border-2 border-amber-300 max-w-[200px] sm:max-w-[230px]">
+            <div class="relative overflow-hidden rounded-xl border border-amber-200 shadow-inner">
+              <img 
+                src="assets/kshitij.jpg" 
+                alt="Kshitij - my cutu and cool brother" 
+                class="w-full h-auto object-cover max-h-56"
+              />
+              <div class="absolute top-1.5 right-1.5 bg-amber-500/90 text-amber-950 font-black px-2 py-0.5 rounded-full text-[10px] shadow flex items-center gap-0.5 border border-amber-300">
+                <span>😎</span>
+                <span>Cutu Bro</span>
+              </div>
+            </div>
+            <p class="font-handwriting text-xl sm:text-2xl text-amber-950 font-bold mt-2 leading-tight">
+              “my cutu and cool brother”
+            </p>
+          </div>
+          <!-- Decorative sunflower on modal photo -->
+          <div class="absolute -top-2 -right-2 text-2xl animate-spin-slow">🌻</div>
+        </div>
+
+        <div class="space-y-1">
+          <span class="text-amber-700 font-bold text-xs uppercase tracking-widest">To Someone Truly Special</span>
+          <h3 class="font-serif-display text-3xl sm:text-4xl font-extrabold text-amber-950">Dear Kshitij</h3>
+        </div>
+
+        <!-- The exact requested text with blessed emojis -->
+        <div class="bg-white/90 backdrop-blur-md rounded-2xl p-6 sm:p-8 border-2 border-amber-300 shadow-inner relative">
+          <p class="font-handwriting text-2xl sm:text-3xl lg:text-4xl text-amber-950 font-bold leading-relaxed">
+            “thankyou for always guiding me and please be the same like this only kshitij , i m very grateful to have you in my life 😇🙏✨”
+          </p>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <button id="modal-celebrate-btn" class="important-btn-glow bg-amber-500 hover:bg-amber-600 text-amber-950 font-bold px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-2">
+            <span>🌻 Shower More Sunflowers</span>
+          </button>
+          <button id="modal-copy-btn" class="bg-white/95 hover:bg-white text-amber-900 font-semibold px-6 py-3 rounded-xl border border-amber-300 shadow-sm transition-all flex items-center gap-2">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            <span id="modal-copy-text">Copy Note</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="relative z-10 bg-amber-100/80 border-t border-amber-200 py-10 text-center">
+    <div class="max-w-7xl mx-auto px-4 space-y-3">
+      <div class="text-3xl animate-spin-slow inline-block">🌻</div>
+      <p class="font-serif-display text-xl font-bold text-amber-950">Spreading Warmth, Joy, & Gratitude</p>
+      <p class="text-amber-800 text-sm">Created with love, radiant sunflowers, and sincere appreciation.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>

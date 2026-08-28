@@ -1,0 +1,309 @@
+/* Modern Bright Sunflower Theme Stylesheet */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap');
+
+:root {
+  --sun-gold: #FFB300;
+  --sun-yellow: #FFC837;
+  --sun-amber: #FF8F00;
+  --sun-deep: #E65100;
+  --sun-petal-dark: #F57F17;
+  --seed-center: #4E342E;
+  --seed-ring: #3E2723;
+  --leaf-green: #43A047;
+  --leaf-light: #81C784;
+  --sky-glow: #FFF9E6;
+  --bg-warm: #FFFDF7;
+  --card-bg: rgba(255, 255, 255, 0.92);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-warm);
+  color: #2D3748;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+}
+
+.font-serif-display {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Background Sunbeam Glow */
+.sunbeam-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(circle at 15% 10%, rgba(255, 200, 55, 0.28) 0%, transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(255, 179, 0, 0.22) 0%, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(255, 248, 225, 0.8) 0%, transparent 60%),
+    linear-gradient(180deg, #FFFDF5 0%, #FFF8E1 50%, #FFF3E0 100%);
+}
+
+#petals-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Glowing Aura & Floating Animation */
+@keyframes floatSway {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+@keyframes gentleBreeze {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(2.5deg);
+  }
+  70% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 179, 0, 0.5), 0 0 45px rgba(255, 200, 55, 0.35);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 179, 0, 0.8), 0 0 65px rgba(255, 200, 55, 0.6);
+    transform: scale(1.03);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sunRaysPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+.animate-float-sway {
+  animation: floatSway 5s ease-in-out infinite;
+}
+
+.animate-gentle-breeze {
+  animation: gentleBreeze 6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 35s linear infinite;
+}
+
+.animate-sun-pulse {
+  animation: sunRaysPulse 4s ease-in-out infinite;
+}
+
+.important-btn-glow {
+  animation: pulseGlow 2.2s ease-in-out infinite;
+}
+
+/* Glassmorphism Card Style */
+.sun-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255, 213, 79, 0.5);
+  box-shadow: 0 10px 30px -8px rgba(255, 160, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sun-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 36px -6px rgba(255, 160, 0, 0.28), 0 8px 16px rgba(0, 0, 0, 0.04);
+  border-color: rgba(255, 179, 0, 0.9);
+}
+
+/* Sunflower Stem & Leaf Styling */
+.stem-path {
+  stroke: #43A047;
+  stroke-width: 9;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.leaf-path {
+  fill: #4CAF50;
+  stroke: #2E7D32;
+  stroke-width: 1.5;
+  transition: transform 0.3s ease;
+}
+
+.leaf-path:hover {
+  transform: scale(1.1);
+}
+
+/* Interactive Sunflower SVG Elements */
+.sunflower-petal {
+  fill: url(#sunPetalGradient);
+  filter: drop-shadow(0 2px 3px rgba(230, 81, 0, 0.25));
+  transition: transform 0.25s ease, fill 0.25s ease;
+  transform-origin: center;
+}
+
+.sunflower-petal:hover {
+  filter: brightness(1.15) drop-shadow(0 4px 6px rgba(230, 81, 0, 0.4));
+}
+
+.sunflower-center {
+  fill: url(#sunSeedPattern);
+  stroke: #3E2723;
+  stroke-width: 2;
+  filter: drop-shadow(inset 0 2px 5px rgba(0,0,0,0.5));
+}
+
+/* Special Note Modal Styles */
+.modal-backdrop {
+  background: rgba(46, 32, 5, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.special-letter-card {
+  background: linear-gradient(135deg, #FFFDE7 0%, #FFF9C4 50%, #FFF3E0 100%);
+  border: 3px solid #FFCA28;
+  box-shadow: 0 25px 60px -15px rgba(255, 143, 0, 0.5), 0 0 45px rgba(255, 213, 79, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.special-letter-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+  pointer-events: none;
+  animation: spinSlow 40s linear infinite;
+}
+
+/* Sunflower Garden Area */
+.garden-field {
+  background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 40%, #A5D6A7 100%);
+  border-bottom: 12px solid #388E3C;
+  position: relative;
+  min-height: 440px;
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow: inset 0 10px 25px rgba(0,0,0,0.06), 0 15px 35px -10px rgba(76, 175, 80, 0.3);
+}
+
+/* Planted Sunflower Item */
+.planted-sunflower {
+  position: absolute;
+  bottom: 12px;
+  transform-origin: bottom center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+  animation: sproutGrow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes sproutGrow {
+  0% {
+    transform: scale(0) translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.planted-sunflower:hover {
+  transform: scale(1.15) translateY(-8px);
+  z-index: 40;
+}
+
+.planted-sunflower .flower-tooltip {
+  opacity: 0;
+  transform: translateY(10px) translateX(-50%);
+  transition: all 0.25s ease;
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  bottom: 105%;
+  white-space: nowrap;
+}
+
+.planted-sunflower:hover .flower-tooltip {
+  opacity: 1;
+  transform: translateY(0) translateX(-50%);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF8E1;
+}
+::-webkit-scrollbar-thumb {
+  background: #FFB300;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FFA000;
+}
+
+/* Ripple & Burst Effects */
+.sun-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 64, 0.9) 0%, rgba(255, 179, 0, 0) 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: rippleAnim 0.7s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes rippleAnim {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
